@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Санёк & Сосех — Блог Легенды</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Press+Start+2P&display=swap');
+
+    :root {
+      --bg: #0d0d0d;
+      --card: #1a1a2e;
+      --card-hover: #1f1f3a;
+      --accent: #e94560;
+      --accent2: #0f3460;
+      --accent3: #533483;
+      --text: #eaeaea;
+      --text-muted: #888;
+      --glow: rgba(233, 69, 96, 0.4);
+      --glow2: rgba(83, 52, 131, 0.4);
+      --border: #2a2a4a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Comfortaa', cursive, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* --- SCROLLBAR --- */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent3); border-radius: 4px; }
+
+    /* --- BG PARTICLES --- */
+    .bg-particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-particles span {
+      position: absolute;
+      display: block;
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: float 25s linear infinite;
+    }
+    .bg-particles span:nth-child(1) { left: 10%; width: 4px; height: 4px; animation-delay: 0s; animation-duration: 20s; }
+    .bg-particles span:nth-child(2) { left: 20%; width: 8px; height: 8px; animation-delay: 2s; animation-duration: 25s; }
+    .bg-particles span:nth-child(3) { left: 35%; width: 5px; height: 5px; animation-delay: 4s; animation-duration: 18s; }
+    .bg-particles span:nth-child(4) { left: 50%; width: 3px; height: 3px; animation-delay: 0s; animation-duration: 22s; }
+    .bg-particles span:nth-child(5) { left: 65%; width: 7px; height: 7px; animation-delay: 3s; animation-duration: 30s; }
+    .bg-particles span:nth-child(6) { left: 75%; width: 4px; height: 4px; animation-delay: 5s; animation-duration: 19s; }
+    .bg-particles span:nth-child(7) { left: 85%; width: 6px; height: 6px; animation-delay: 7s; animation-duration: 23s; }
+    .bg-particles span:nth-child(8) { left: 45%; width: 5px; height: 5px; animation-delay: 1s; animation-duration: 28s; }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.15; }
+      90% { opacity: 0.15; }
+      100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* --- NAV --- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(13, 13, 13, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 1px;
+      text-shadow: 0 0 20px var(--glow);
+    }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.3s, text-shadow 0.3s;
+      position: relative;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+      text-shadow: 0 0 15px var(--glow);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* --- HERO --- */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .hero-content {
+      max-width: 800px;
+    }
+    .hero-avatar {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent);
+      box-shadow: 0 0 40px var(--glow), 0 0 80px var(--glow2);
+      margin-bottom: 2rem;
+      animation: pulse-glow 3s ease-in-out infinite;
+      transition: transform 0.3s;
+    }
+    .hero-avatar:hover { transform: scale(1.08) rotate(3deg); }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 40px var(--glow), 0 0 80px var(--glow2); }
+      50% { box-shadow: 0 0 60px var(--glow), 0 0 120px var(--glow2); }
+    }
+    .hero h1 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent3), #ff6b6b);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-shift 4s ease infinite;
+    }
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .hero .tagline {
+      font-size: 1rem;
+      color: var(--accent);
+      font-style: italic;
+      margin-bottom: 2rem;
+      opacity: 0.8;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .tag {
+      background: rgba(233, 69, 96, 0.1);
+      border: 1px solid rgba(233, 69, 96, 0.3);
+      color: var(--accent);
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      transition: all 0.3s;
+    }
+    .tag:hover {
+      background: rgba(233, 69, 96, 0.25);
+      box-shadow: 0 0 15px var(--glow);
+      transform: translateY(-2px);
+    }
+    .scroll-hint {
+      margin-top: 3rem;
+      animation: bounce 2s infinite;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* --- SECTIONS --- */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+    .section-title {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 20px var(--glow);
+    }
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 3rem;
+    }
+
+    /* --- ABOUT --- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .about-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+    }
+    .about-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 40px rgba(233, 69, 96, 0.1);
+    }
+    .about-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      color: var(--accent);
+    }
+    .about-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .stat-row:last-child { border: none; }
+    .stat-label { color: var(--text-muted); }
+    .stat-value { color: var(--text); font-weight: 700; }
+
+    /* --- BLOG POSTS --- */
+    .posts { display: flex; flex-direction: column; gap: 2.5rem; }
+    .post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+    }
+    .post:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent3);
+      box-shadow: 0 15px 50px rgba(83, 52, 131, 0.15);
+    }
+    .post-img {
+      width: 100%;
+      height: 100%;
+      min-height: 240px;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .post:hover .post-img { transform: scale(1.05); }
+    .post-img-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+    .post-img-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(233,69,96,0.1), rgba(83,52,131,0.1));
+    }
+    .post-body {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .post-date {
+      font-size: 0.75rem;
+      color: var(--accent3);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .post-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      color: var(--text);
+    }
+    .post-text {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+    .post-footer {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .post-reaction {
+      background: rgba(233, 69, 96, 0.08);
+      border: 1px solid rgba(233, 69, 96, 0.2);
+      color: var(--accent);
+      padding: 0.3rem 0.7rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .post-reaction:hover {
+      background: rgba(233, 69, 96, 0.2);
+      box-shadow: 0 0 10px var(--glow);
+    }
+
+    /* --- GALLERY --- */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .gallery-item:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--accent);
+      box-shadow: 0 15px 50px var(--glow);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .gallery-item:hover img { transform: scale(1.1); }
+    .gallery-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    .gallery-item:hover .gallery-overlay {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .gallery-overlay p {
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    /* --- STATS / ТАБЛИЧКА --- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(233, 69, 96, 0.1);
+    }
+    .stat-number {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.6rem;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .stat-desc {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    /* --- LIFE GOALS --- */
+    .goals-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .goal-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s;
+    }
+    .goal-item:hover {
+      border-color: var(--accent3);
+      background: var(--card-hover);
+    }
+    .goal-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+    .goal-text h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+    .goal-text p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    footer .footer-logo {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.6rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px var(--glow);
+    }
+    .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 1rem; }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 900px) {
+      .about-grid, .goals-list { grid-template-columns: 1fr; }
+      .post { grid-template-columns: 1fr; }
+      .post-img { min-height: 200px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero h1 { font-size: 1.4rem; }
+      .nav-links { gap: 1rem; }
+    }
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .hero h1 { font-size: 1.1rem; }
+      .nav-links { display: none; }
+    }
+
+    /* --- ANIMATIONS ON SCROLL --- */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BG PARTICLES -->
+  <div class="bg-particles">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">СОСЕХ™</a>
+      <ul class="nav-links">
+        <li><a href="#about">О Саньке</a></li>
+        <li><a href="#blog">Блог</a></li>
+        <li><a href="#gallery">Галерея</a></li>
+        <li><a href="#goals">Цели</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <img src="img/photo_1.jpg" alt="Санёк" class="hero-avatar">
+      <h1>САНЁК / СОСЕХ</h1>
+      <p class="subtitle">30 лет · г. Электрогорск · профи по пиву и грусти</p>
+      <p class="tagline">«Немножко сислый, но не кислый. Иногда бывает сасный.»</p>
+      <div class="hero-tags">
+        <span class="tag">🍺 Балтика №9</span>
+        <span class="tag">🎮 Геншин Импакт</span>
+        <span class="tag">🎌 Аниме</span>
+        <span class="tag">🏡 Дача</span>
+        <span class="tag">🏭 Электромашина</span>
+        <span class="tag">💔 Альтушка ищу</span>
+        <span class="tag">🍕 Жрать</span>
+        <span class="tag">🚽 Посрать</span>
+      </div>
+      <div class="scroll-hint">▼ листай вниз ▼</div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section>
+    <div class="stats-grid fade-in">
+      <div class="stat-card">
+        <span class="stat-number">30</span>
+        <span class="stat-desc">лет тушкой</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">∞</span>
+        <span class="stat-desc">балтики выпито</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">0</span>
+        <span class="stat-desc">баб в наличии</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">1</span>
+        <span class="stat-desc">Электрогорск</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2 class="section-title fade-in">// КТО ТАКОЙ СОСЕХ</h2>
+    <p class="section-subtitle fade-in">досье на самого себя</p>
+    <div class="about-grid">
+      <div class="about-card fade-in">
+        <h3>📋 Досье</h3>
+        <div class="stat-row"><span class="stat-label">Имя</span><span class="stat-value">Санёк / Сосех</span></div>
+        <div class="stat-row"><span class="stat-label">Возраст</span><span class="stat-value">30 лет</span></div>
+        <div class="stat-row"><span class="stat-label">Город</span><span class="stat-value">Электрогорск</span></div>
+        <div class="stat-row"><span class="stat-label">Место работы</span><span class="stat-value">Электромашина (топ)</span></div>
+        <div class="stat-row"><span class="stat-label">Статус</span><span class="stat-value">свободен, к сожалению</span></div>
+        <div class="stat-row"><span class="stat-label">Размер</span><span class="stat-value">немножко сислый</span></div>
+      </div>
+      <div class="about-card fade-in">
+        <h3>❤️ Любимые вещи</h3>
+        <div class="stat-row"><span class="stat-label">Пиво</span><span class="stat-value">Балтика №9</span></div>
+        <div class="stat-row"><span class="stat-label">Еда</span><span class="stat-value">всё что можно пожрать</span></div>
+        <div class="stat-row"><span class="stat-label">Аниме</span><span class="stat-value">обожает</span></div>
+        <div class="stat-row"><span class="stat-label">Игра</span><span class="stat-value">Геншин Импакт</span></div>
+        <div class="stat-row"><span class="stat-label">Место</span><span class="stat-value">дача, Электрогорск</span></div>
+        <div class="stat-row"><span class="stat-label">Компания</span><span class="stat-value">Магнит по городам</span></div>
+      </div>
+      <div class="about-card fade-in">
+        <h3>🧠 Мировоззрение</h3>
+        <p>Простой парень из рабочего города. Работает на Электромашине — и гордится этим. Вечером пьёт Балтику, смотрит аниме и катает в Геншин. На выходных ездит на дачу. Ищет альтушку, но пока только магниты по городам обходит.</p>
+      </div>
+      <div class="about-card fade-in">
+        <h3>🎯 Миссия</h3>
+        <p>Жить в своё удовольствие: пожрать, попить, посмотреть аниме, посрать в тишине на даче. Иногда быть сасным. Искать альтушку. Не кислеть. Топить за Электрогорск и Электромашину до последнего вздоха.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog">
+    <h2 class="section-title fade-in">// МИНИ-БЛОГ</h2>
+    <p class="section-subtitle fade-in">мысли, события и бытие</p>
+    <div class="posts">
+
+      <div class="post fade-in">
+        <div class="post-img-wrap">
+          <img src="img/photo_2.jpg" alt="Сосех за делом" class="post-img">
+        </div>
+        <div class="post-body">
+          <span class="post-date">Выпуск #1 · повседневность</span>
+          <h3 class="post-title">Обзор дня: Балтика и тишина</h3>
+          <p class="post-text">
+            Пятница. Работа закончилась, Электромашина отпустила домой. Открыл холодильник — Балтика №9 ждёт как старый друг. Сел на диван, включил аниме. Мир в порядке. Бабы нет — и ладно, кому они нужны когда есть Геншин и хрустящая картошка. Электрогорск встречает закатом. Жизнь хороша, братцы.
+          </p>
+          <div class="post-footer">
+            <span class="post-reaction">🍺 14</span>
+            <span class="post-reaction">❤️ 7</span>
+            <span class="post-reaction">💬 3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post fade-in">
+        <div class="post-img-wrap">
+          <img src="img/photo_3.jpg" alt="Сосех на природе" class="post-img">
+        </div>
+        <div class="post-body">
+          <span class="post-date">Выпуск #2 · дача</span>
+          <h3 class="post-title">Дача — вот где начинается жизнь</h3>
+          <p class="post-text">
+            Выбрался на дачу. Наследил по грядкам, покопался в земле, как настоящий мужик. Затем сел на крыльцо с Балтикой и смотрел на деревья. Вот оно — счастье. Не в Париже, не в Дубае, а на даче под Электрогорском с жареной картошкой и тишиной. Альтушка бы сюда — вот бы зажили!
+          </p>
+          <div class="post-footer">
+            <span class="post-reaction">🍺 22</span>
+            <span class="post-reaction">❤️ 11</span>
+            <span class="post-reaction">💬 5</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post fade-in">
+        <div class="post-img-wrap">
+          <img src="img/photo_4.jpg" alt="Сосех фоткается" class="post-img">
+        </div>
+        <div class="post-body">
+          <span class="post-date">Выпуск #3 · самопознание</span>
+          <h3 class="post-title">Немножко сислый, но не кислый</h3>
+          <p class="post-text">
+            Посмотрел в зеркало — а я немножко сислый. Ну и хер с ним. Зато я не кислый! Это главное. Пока другие парни ходят в зал и считают калории, я пью Балтику и смотрю Геншин-гайды. У каждого свой путь, и мой путь — это путь настоящего скуфа из Электрогорска. Горжусь.
+          </p>
+          <div class="post-footer">
+            <span class="post-reaction">🍺 31</span>
+            <span class="post-reaction">❤️ 18</span>
+            <span class="post-reaction">💬 9</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post fade-in">
+        <div class="post-img-wrap">
+          <img src="img/photo_5.jpg" alt="Сосех ищет альтушку" class="post-img">
+        </div>
+        <div class="post-body">
+          <span class="post-date">Выпуск #4 · мечты</span>
+          <h3 class="post-title">Поиск альтушки: эпизод 847</h3>
+          <p class="post-text">
+            Опять сидишь и думаешь — где она, моя альтушка? Может, в Магните? Заходишь в Магнит, а там одни бабушки и пиво по акции. Берёшь пиво и уходишь. Завтра опять поищем. Может, в другом городе? Геншин подсказывает: «Не сдавайся, traveler!» Ну ладно, подождём.
+          </p>
+          <div class="post-footer">
+            <span class="post-reaction">🍺 27</span>
+            <span class="post-reaction">❤️ 15</span>
+            <span class="post-reaction">💬 12</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="post fade-in">
+        <div class="post-img-wrap">
+          <img src="img/photo_6.jpg" alt="Сосех сасный" class="post-img">
+        </div>
+        <div class="post-body">
+          <span class="post-date">Выпуск #5 · настроение</span>
+          <h3 class="post-title">Когда ты сасный, но не в Магните</h3>
+          <p class="post-text">
+            Бывают моменты, когда ты прям сасный. Вышел из душа, причёсанный, одетый. Посмотрел на себя — красавчик. Сел в маршрутку до Магнита — и всё, настроение умерло. Увидел как там люди консервы вытворяют... Но Балтика дома ждёт. Электрогорск — мой замок, а я — его сасный король.
+          </p>
+          <div class="post-footer">
+            <span class="post-reaction">🍺 19</span>
+            <span class="post-reaction">❤️ 23</span>
+            <span class="post-reaction">💬 8</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <h2 class="section-title fade-in">// ГАЛЕРЕЯ</h2>
+    <p class="section-subtitle fade-in">архив сасных моментов</p>
+    <div class="gallery-grid">
+      <div class="gallery-item fade-in">
+        <img src="img/photo_1.jpg" alt="Сосех">
+        <div class="gallery-overlay"><p>Аватарка для тиндера (не работает)</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <img src="img/photo_2.jpg" alt="Сосех">
+        <div class="gallery-overlay"><p>Пятница, балтика, покой</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <img src="img/photo_3.jpg" alt="Сосех">
+        <div class="gallery-overlay"><p>Дачный мужик в полной красе</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <img src="img/photo_4.jpg" alt="Сосех">
+        <div class="gallery-overlay"><p>Сислый, но гордый</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <img src="img/photo_5.jpg" alt="Сосех">
+        <div class="gallery-overlay"><p>В поисках альтушки</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <img src="img/photo_6.jpg" alt="Сосех">
+        <div class="gallery-overlay"><p>Сасный момент зафиксирован</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOALS -->
+  <section id="goals">
+    <h2 class="section-title fade-in">// ЦЕЛИ В ЖИЗНИ</h2>
+    <p class="section-subtitle fade-in">чего хочет этот великий человек</p>
+    <div class="goals-list">
+      <div class="goal-item fade-in">
+        <span class="goal-icon">🍺</span>
+        <div class="goal-text">
+          <h4>Балтика №9 навсегда</h4>
+          <p>Ни одного дня без пива. Балтика — это не напиток, это стиль жизни.</p>
+        </div>
+      </div>
+      <div class="goal-item fade-in">
+        <span class="goal-icon">💋</span>
+        <div class="goal-text">
+          <h4>Найти альтушку</h4>
+          <p>Искать по всем Магнитам города. Однажды она появится.</p>
+        </div>
+      </div>
+      <div class="goal-item fade-in">
+        <span class="goal-icon">🎌</span>
+        <div class="goal-text">
+          <h4>Прокачать Геншин</h4>
+          <p>Все персонажи на C6. Мечта, но почему бы и нет.</p>
+        </div>
+      </div>
+      <div class="goal-item fade-in">
+        <span class="goal-icon">🏡</span>
+        <div class="goal-text">
+          <h4>Дача — храм</h4>
+          <p>Каждые выходные на даче. Жарить шашлык и пить пиво.</p>
+        </div>
+      </div>
+      <div class="goal-item fade-in">
+        <span class="goal-icon">📺</span>
+        <div class="goal-text">
+          <h4>Досмотреть всё аниме</h4>
+          <p>Список на 200+ тайтлов. Не остановлюсь.</p>
+        </div>
+      </div>
+      <div class="goal-item fade-in">
+        <span class="goal-icon">🏭</span>
+        <div class="goal-text">
+          <h4>Не уволиться с Электромашины</h4>
+          <p>Работа говно, но своя. Электрогорск — лучший город.</p>
+        </div>
+      </div>
+      <div class="goal-item fade-in">
+        <span class="goal-icon">🚽</span>
+        <div class="goal-text">
+          <h4>Свободно посрать</h4>
+          <p>Базовая потребность. Дачный туалет — лучший туалет.</p>
+        </div>
+      </div>
+      <div class="goal-item fade-in">
+        <span class="goal-icon">😎</span>
+        <div class="goal-text">
+          <h4>Быть сасным</h4>
+          <p>Хотя бы иногда. Когда не в Магните — обязательно.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">СОСЕХ™</div>
+    <div class="footer-links">
+      <a href="#about">О Саньке</a>
+      <a href="#blog">Блог</a>
+      <a href="#gallery">Галерея</a>
+      <a href="#goals">Цели</a>
+    </div>
+    <p>© 2026 Санёк "Сосех" · Электрогорск · Все права защищены Балтикой №9</p>
+    <p style="margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.5;">сделано с любовью к пиву и аниме</p>
+  </footer>
+
+  <!-- SCROLL ANIMATION -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
